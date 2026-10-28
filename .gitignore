@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+runs/
+data/*.csv
+data/*.xlsx
+!data/sample_synthetic.csv
+*.weights.h5
+.DS_Store

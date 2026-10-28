@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper."
+title: "Explainable FinTech Models for Credit Scoring, Personalized Lending, and Trustworthy Financial Decision-Making"
+type: software
+authors:
+  - name: "The authors"
+keywords: [explainable AI, FinTech, credit scoring, Bi-LSTM, attention, fairness]
+license: MIT
