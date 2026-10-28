@@ -1,0 +1,67 @@
+# Default configuration — values follow Section 4.3 of the paper.
+
+data:
+  path: data/fintech_credit_risk.csv     # CSV / XLSX exported from the dataset link (see data/README.md)
+  target: default                         # 1 = default risk, 0 = non-default (Eq. 3)
+  protected_attribute: gender             # used by the fairness module (Eq. 48–51)
+  privileged_value: Male                  # value of the protected attribute treated as A = 1
+  id_columns: [borrower_id]               # dropped before training
+  drop_columns: [loan_approval_status]    # post-outcome columns that would leak the label
+  split: {train: 0.70, val: 0.15, test: 0.15}
+  seed: 42
+
+model:
+  dense_units: [128, 64]      # Eq. 13–14
+  dropout: 0.3                # searched in [0.2, 0.5]
+  d_token: 32                 # per-feature embedding size (Eq. 10)
+  attention_heads: 8          # Eq. 23
+  lstm_units: 64              # per direction (Eq. 33)
+  residual_units: 128
+  residual_blocks: 2          # Eq. 34–36
+  use_attention: true
+  use_lstm: true
+  use_residual: true
+
+training:
+  optimizer: adam             # Eq. 61–65
+  learning_rate: 0.001
+  batch_size: 128
+  epochs: 100
+  early_stopping_patience: 10
+  lr_patience: 4              # ReduceLROnPlateau-style schedule
+  lr_factor: 0.5
+  class_weighting: true       # counter the 86/14 class imbalance
+
+fairness:
+  enabled: true
+  lambda_bias: 0.5            # λ in Eq. 50
+  adversarial: false          # Eq. 52 adversarial debiasing (gradient reversal)
+  adv_weight: 0.1
+
+evaluation:
+  threshold: f1               # "f1" = tune on validation set, or a number such as 0.5
+
+xai:
+  n_explain: 300              # test borrowers explained by SHAP / IG / attention
+  shap_background: 100
+  shap_samples: 300
+  lime_num_features: 6
+  ig_steps: 50
+  attention_groups:           # behavioural groups for the attention explainability chart (Figure 6)
+    Transaction Behaviour: [transaction_volume, transaction_stability, avg_account_balance, overdraft_count]
+    Mobile Payments: [mobile_money_usage, mobile_payment_frequency, digital_wallet_balance]
+    Repayment Trends: [repayment_trend, repayment_history_score, num_late_payments, num_missed_payments]
+    Utility Payments: [utility_bill_consistency, rent_payment_consistency]
+    Spending Behaviour: [monthly_spending, spending_behaviour_index, savings_ratio, ecommerce_txn_count]
+    Loan History: [existing_loans, bankruptcy_history, months_since_last_default, loan_repayment_delay_days]
+
+lending:
+  base_rate: 4.0              # R_b in Eq. 55 (%)
+  alpha: 18.0                 # α in Eq. 55
+  approval_threshold: 0.60    # τ in Eq. 56
+  risk_bands: {low: 0.30, high: 0.60}
+  prs_weights: [-0.6, 0.25, -0.15]   # ω1..ω3 in Eq. 57 (CRS, income, spending)
+  lambda_dynamic: 0.3         # λ in Eq. 42 (weight on the previous score)
+  eta_behaviour: 0.8          # η in Eq. 58
+
+output_dir: runs/default

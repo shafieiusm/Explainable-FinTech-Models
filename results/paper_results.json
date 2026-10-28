@@ -1,0 +1,62 @@
+{
+  "_source": "Values reported in 'Explainable FinTech Models for Credit Scoring, Personalized Lending, and Trustworthy Financial Decision-Making' (Tables 2-3, Figures 4-8).",
+  "test_metrics": {"accuracy": 97.42, "f1": 91.85, "auc_roc": 99.12, "mcc": 0.9024},
+  "ablation": [
+    {"configuration": "w/o Attention",     "accuracy": 92.57, "f1": 71.66, "auc_roc": 95.59, "mcc": 0.6744},
+    {"configuration": "w/o Residual",      "accuracy": 92.32, "f1": 70.35, "auc_roc": 94.85, "mcc": 0.6604},
+    {"configuration": "w/o Temporal LSTM", "accuracy": 92.45, "f1": 71.27, "auc_roc": 94.80, "mcc": 0.6698},
+    {"configuration": "w/o Fairness Opt.", "accuracy": 92.55, "f1": 72.01, "auc_roc": 94.82, "mcc": 0.6773},
+    {"configuration": "w/o XAI Module",    "accuracy": 93.18, "f1": 73.73, "auc_roc": 95.94, "mcc": 0.6991},
+    {"configuration": "Full Proposed",     "accuracy": 97.42, "f1": 91.85, "auc_roc": 99.12, "mcc": 0.9024}
+  ],
+  "cross_validation": {
+    "folds": [
+      {"fold": 1, "accuracy": 91.22, "precision": 97.42, "recall": 35.33, "f1": 51.85, "auc_roc": 98.51},
+      {"fold": 2, "accuracy": 89.12, "precision": 99.02, "recall": 18.88, "f1": 31.71, "auc_roc": 97.97},
+      {"fold": 3, "accuracy": 91.07, "precision": 94.06, "recall": 35.51, "f1": 51.56, "auc_roc": 98.44},
+      {"fold": 4, "accuracy": 92.05, "precision": 96.19, "recall": 42.35, "f1": 58.81, "auc_roc": 98.51},
+      {"fold": 5, "accuracy": 91.60, "precision": 97.62, "recall": 38.25, "f1": 54.96, "auc_roc": 98.42}
+    ],
+    "summary": {
+      "accuracy": {"mean": 91.01, "std": 1.12}, "precision": {"mean": 96.86, "std": 1.86},
+      "recall": {"mean": 34.06, "std": 8.95}, "f1": {"mean": 49.78, "std": 10.52},
+      "auc_roc": {"mean": 98.37, "std": 0.23}
+    }
+  },
+  "feature_importance": {
+    "credit_score": 0.4305, "DTI": 0.1978, "num_missed_payments": 0.1398, "months_since_last_default": 0.0470,
+    "monthly_debt": 0.0271, "bankruptcy_history": 0.0184, "num_late_payments": 0.0152, "annual_income": 0.0127,
+    "credit_utilisation_ratio": 0.0085, "monthly_income": 0.0082
+  },
+  "shap_importance": {
+    "Debt-to-Income Ratio": 0.284, "Credit Utilization Ratio": 0.251, "Repayment History": 0.238,
+    "Monthly Income": 0.217, "Mobile Payment Frequency": 0.194, "Transaction Stability": 0.186,
+    "Spending Behaviour": 0.173, "Utility Bill Payment Consistency": 0.162, "Loan Repayment Delay": 0.151,
+    "Financial Transaction Volume": 0.146
+  },
+  "lime_local": [
+    ["Credit Score", 0.42], ["Debt-to-Income Ratio", -0.31], ["Repayment History", 0.28],
+    ["Monthly Income", 0.22], ["Credit Utilization", -0.18], ["Late Payments", -0.12]
+  ],
+  "attention_importance": {
+    "Transaction Behaviour": 0.31, "Mobile Payments": 0.22, "Repayment Trends": 0.41,
+    "Utility Payments": 0.18, "Spending Behaviour": 0.27, "Loan History": 0.35
+  },
+  "lending": [
+    {"borrower_id": "B001", "credit_risk_score": 0.18, "interest_rate_pct": 6.5,  "risk_band": "Low Risk"},
+    {"borrower_id": "B002", "credit_risk_score": 0.27, "interest_rate_pct": 7.2,  "risk_band": "Low Risk"},
+    {"borrower_id": "B003", "credit_risk_score": 0.41, "interest_rate_pct": 9.8,  "risk_band": "Medium Risk"},
+    {"borrower_id": "B004", "credit_risk_score": 0.53, "interest_rate_pct": 11.4, "risk_band": "Medium Risk"},
+    {"borrower_id": "B005", "credit_risk_score": 0.68, "interest_rate_pct": 14.7, "risk_band": "High Risk"},
+    {"borrower_id": "B006", "credit_risk_score": 0.74, "interest_rate_pct": 16.1, "risk_band": "High Risk"},
+    {"borrower_id": "B007", "credit_risk_score": 0.33, "interest_rate_pct": 8.9,  "risk_band": "Medium Risk"},
+    {"borrower_id": "B008", "credit_risk_score": 0.12, "interest_rate_pct": 5.9,  "risk_band": "Low Risk"},
+    {"borrower_id": "B009", "credit_risk_score": 0.81, "interest_rate_pct": 18.4, "risk_band": "High Risk"},
+    {"borrower_id": "B010", "credit_risk_score": 0.46, "interest_rate_pct": 10.2, "risk_band": "Medium Risk"}
+  ],
+  "dynamic_risk": {
+    "labels": ["Month 1", "Month 2", "Month 3", "Month 4", "Month 5"],
+    "initial": [0.42, 0.45, 0.51, 0.63, 0.74],
+    "updated": [0.45, 0.51, 0.63, 0.74, 0.39]
+  }
+}
